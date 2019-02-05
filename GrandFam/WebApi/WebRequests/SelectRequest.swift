@@ -15,9 +15,7 @@ extension WebApi {
         static public func GetEvents(cond: String = "") -> [GFEvent]{
             
             let tableName = "events"
-            let dest = "select.php"
-            
-            let data = getData(tableName: tableName, dest: dest, cond: cond)
+            let data = getData(tableName: tableName, cond: cond)
             var eventData = [GFEvent]()
             
             do {
@@ -28,16 +26,13 @@ extension WebApi {
             } catch let jsonError {
                 print(jsonError)
             }
-            
             return eventData
         }
         
         static public func GetLocations(cond: String = "") -> [GFLocation]{
             
             let tableName = "locations"
-            let dest = "select.php"
-            
-            let data = getData(tableName: tableName, dest: dest, cond: cond) //makeRequest(sql: sql, dest: dest)
+            let data = getData(tableName: tableName, cond: cond) //makeRequest(sql: sql, dest: dest)
             var locationData = [GFLocation]()
             
             do {
@@ -48,38 +43,34 @@ extension WebApi {
             } catch let jsonError {
                 print(jsonError)
             }
-            
             return locationData
         }
         
         static public func GetUsers(cond: String = "") -> [GFUser]{
             
             let tableName = "users"
-            let dest = "select.php"
             
-            let data = getData(tableName: tableName, dest: dest, cond: cond)
+            let data = getData(tableName: tableName, cond: cond)
             var userData = [GFUser]()
             
             do {
                 //Decode retrived data with JSONDecoder and assing type of GFObject
                 let eventData = try JSONDecoder().decode([GFUser].self, from: data)
-                print(String(data: data, encoding: .utf8)!)
+                
                 userData = eventData
             } catch let jsonError {
                 print(jsonError)
             }
-            
             return userData
         }
         
         static public func GetParticipants(eventId: String) -> [GFPatricipant] {
             
             let tableName = "event_p"
-            let dest = "select.php"
             let cond = " join users on event_p.user_id = users.user_id where event_id = \(eventId)"
             var pData = [GFPatricipant]()
             
-            let data = getData(tableName: tableName, dest: dest, cond: cond)
+            let data = getData(tableName: tableName, cond: cond)
             
             do {
                 //Decode retrived data with JSONDecoder and assing type of GFObject
@@ -89,18 +80,16 @@ extension WebApi {
             } catch let jsonError {
                 print(jsonError)
             }
-            
             return pData
         }
         
         static public func GetParticipantInfo(eventId: Int) -> [GFPatricipant] {
             
             let tableName = "event_p"
-            let dest = "select.php"
             let cond = " where event_id = \(eventId)"
             var partData = [GFPatricipant]()
             
-            let data = getData(tableName: tableName, dest: dest, cond: cond)
+            let data = getData(tableName: tableName, cond: cond)
             
             do {
                 //Decode retrived data with JSONDecoder and assing type of GFObject
@@ -110,7 +99,6 @@ extension WebApi {
             } catch let jsonError {
                 print(jsonError)
             }
-            
             return partData
         }
     }

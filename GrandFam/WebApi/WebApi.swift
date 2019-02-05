@@ -64,13 +64,13 @@ class WebApi {
         return reqData
     }
     
-    static public func makePostRequest(dest: String, tableName: String, jsonData: Data) -> URLRequest {
+    static public func makePostRequest(dest: String, queryItems: [URLQueryItem], jsonData: Data) -> Data {
         
         var urlComponents = URLComponents()
         urlComponents.scheme = baseSchema
         urlComponents.host = baseHost
         urlComponents.path = "/" + dest
-        urlComponents.queryItems = [URLQueryItem(name: "table", value: tableName)]
+        urlComponents.queryItems = queryItems
         guard let url = urlComponents.url else { fatalError("Could not create URL from components") }
         
         // Specify this request as being a POST method
@@ -84,18 +84,18 @@ class WebApi {
         
         // ... and set our request's HTTP body
         request.httpBody = jsonData
-        print("jsonData: ", String(data: request.httpBody!, encoding: .utf8) ?? "no body data")
+        //print("jsonData: ", String(data: request.httpBody!, encoding: .utf8) ?? "no body data") - Debuggoing purposes
         
-        return request
+        return makeRequest(path: "\(dest)", request: request)
     }
     
-    static public func getData(tableName: String, dest: String, cond: String) -> Data {
+    static public func getData(tableName: String, dest: String = "select.php", cond: String) -> Data {
         
         let path = "\(dest)?sql=select * from \(tableName) \(cond == "" ? "" : cond)"
         return makeRequest(path: path)
     }
     
-    static public func InsertData(tableName: String, dest: String, encodableValue: GFObject, completion:((Error?) -> Void)?) -> Data {
+    static public func InsertData(tableName: String, dest: String = "insert.php", encodableValue: GFObject, completion:((Error?) -> Void)?) -> Data {
         
         //  Encode the passed value to json
         var json : Data?
@@ -106,11 +106,11 @@ class WebApi {
         }
         
         //  Make a postrequest with the Json as body and post it to ansigroup.se
-        let request =  makePostRequest(dest: dest, tableName: tableName, jsonData: json!)
-        return makeRequest(path: "\(dest)?=\(tableName)", request: request )
+        let queryItems = [URLQueryItem(name: "table", value: tableName)]
+        return makePostRequest(dest: dest, queryItems: queryItems, jsonData: json!)
     }
     
-    static public func UpdateData(tableName: String, dest: String, id: Int, value: [String:String], completion:((Error?) -> Void)?) -> Data {
+    static public func UpdateData(tableName: String, dest: String = "update.php", id: String, value: [String:String], completion:((Error?) -> Void)?) -> Data {
         
         //  Encode the passed value to json
         var json : Data?
@@ -120,7 +120,8 @@ class WebApi {
             completion?(error)
         }
         
-        let request = makePostRequest(dest: dest, tableName: tableName, jsonData: json!)
-        return makeRequest(path: "\(dest)?id=\(id)", request: request)
+        //  Make a postrequest with the Json as body and post it to ansigroup.se
+        let queryItems = [ URLQueryItem(name: "table", value: tableName), URLQueryItem(name: "id", value: id)]
+        return makePostRequest(dest: dest, queryItems: queryItems, jsonData: json!)
     }
 }

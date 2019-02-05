@@ -52,6 +52,8 @@ class GFUser : GFObject{
         self.userId = try container.decode(String.self, forKey: .userId)
         self.fName = try container.decodeIfPresent(String.self, forKey: .fName)
         self.lName = try container.decodeIfPresent(String.self, forKey: .lName)
+        self.userName = try container.decode(String.self, forKey: .userName)
+        self.password = try container.decode(String.self, forKey: .password)
         self.created = try container.decode(String.self, forKey: .created)
     }
     

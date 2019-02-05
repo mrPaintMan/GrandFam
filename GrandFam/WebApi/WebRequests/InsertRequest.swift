@@ -14,49 +14,41 @@ extension WebApi {
         
         static public func InsertUser(user: GFUser) -> String {
             let tableName = "users"
-            let dest = "insert.php"
-            let response = InsertData(tableName: tableName, dest: dest, encodableValue: user) { (error) in
+            let response = InsertData(tableName: tableName, encodableValue: user) { (error) in
                 if error != nil {
                     print(error!.localizedDescription)
                 }
             }
-            
             return DataToString(data: response)
         }
         
         static public func InsertParticipant(user: GFPatricipant) -> String {
             let tableName = "p_events"
-            let dest = "insert.php"
-            let response = InsertData(tableName: tableName, dest: dest, encodableValue: user) { (error) in
+            let response = InsertData(tableName: tableName, encodableValue: user) { (error) in
                 if error != nil {
                     print(error!.localizedDescription)
                 }
             }
-            
             return DataToString(data: response)
         }
         
         static public func InsertLocation(location: GFLocation) -> String {
             let tableName = "locations"
-            let dest = "insert.php"
-            let response = InsertData(tableName: tableName, dest: dest, encodableValue: location) { (error) in
+            let response = InsertData(tableName: tableName, encodableValue: location) { (error) in
                 if error != nil {
                     print(error!.localizedDescription)
                 }
             }
-            
             return DataToString(data: response)
         }
         
         static public func InsertEvent(event: GFEvent) -> String {
             let tableName = "events"
-            let dest = "insert.php"
-            let response = InsertData(tableName: tableName, dest: dest, encodableValue: event) { (error) in
+            let response = InsertData(tableName: tableName, encodableValue: event) { (error) in
                 if error != nil {
                     print(error!.localizedDescription)
                 }
             }
-            
             return DataToString(data: response)
         }
         
