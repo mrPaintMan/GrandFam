@@ -17,10 +17,10 @@ rl.on('line', (input) => {
 const query = function(sql) {
 
 	var con = mysql.createConnection({
-	host: "mysql679.loopia.se",
-	user: "filip@a244459",
-	password: "p@lmQv1$t",
-	database: "ansigroup_se"
+	host: "secret",
+	user: "secret",
+	password: "secret",
+	database: "secret"
 	});
 
 	con.query(sql, function(err, result, fields) {
